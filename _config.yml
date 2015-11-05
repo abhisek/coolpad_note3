@@ -11,9 +11,12 @@ email: abhisek@sigsegv.in
 description: > # this means to ignore newlines until "baseurl:"
   Experiments with Coolpad Note 3. From analysis to making it usable.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "http://abhisek.github.io/coolpad_note3/"
 twitter_username: abh1sek
 github_username:  abhisek
+safe: true
+lsi: false
+github:
 
 # Build settings
 markdown: kramdown
