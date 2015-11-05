@@ -63,7 +63,7 @@ However, for Burp's SSL interception to work, Burp's CA certificate must be inst
 
 > Note: SSL interception will not work even after installing Burp CA certificate for apps that uses [SSL Pinning](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning)
 
-I was able to see Burp intercepting both HTTP and HTTPS traffic after installing Burp's CA certificate in the device and setting up appropriate firewall rules for NAT and HTTP/HTTPS redirection to Burp listener.
+I was able to confirm Burp intercepting both HTTP and HTTPS traffic after installing Burp's CA certificate in the device and setting up appropriate firewall rules for NAT and HTTP/HTTPS redirection to Burp listener.
 
 ![Burp Interception]({{ site.baseurl }}/images/burp1.png)
 
