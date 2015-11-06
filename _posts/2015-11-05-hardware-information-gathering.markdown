@@ -37,9 +37,9 @@ categories: porting
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x1000000
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x1000000
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0xa2800000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x32000000
-BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x2d9d80000
 {% endhighlight %}
+<small>Obtained from /proc/partinfo in the device</small>
 
 ### Prerequisite
 
@@ -95,6 +95,42 @@ ro.board.platform=mt6753
 ro.mediatek.platform=MT6735
 
 {% endhighlight %}
+
+**Update**: All partition information required for building CM recovery can be found from */proc/partinfo* in the device:
+
+{% highlight bash %}
+$ adb shell cat /proc/partinfo
+Name             Start                  Size            
+pgpt             0x0000000000000000     0x0000000000080000
+proinfo          0x0000000000080000     0x0000000000300000
+nvram            0x0000000000380000     0x0000000000500000
+protect1         0x0000000000880000     0x0000000000a00000
+protect2         0x0000000001280000     0x0000000000a00000
+lk               0x0000000001c80000     0x0000000000080000
+para             0x0000000001d00000     0x0000000000080000
+boot             0x0000000001d80000     0x0000000001000000
+recovery         0x0000000002d80000     0x0000000001000000
+logo             0x0000000003d80000     0x0000000000800000
+yl_params        0x0000000004580000     0x0000000000100000
+autobak          0x0000000004680000     0x0000000001000000
+panic            0x0000000005680000     0x0000000001400000
+lk_bak           0x0000000006a80000     0x0000000000080000
+expdb            0x0000000006b00000     0x0000000000a00000
+seccfg           0x0000000007500000     0x0000000000080000
+oemkeystore      0x0000000007580000     0x0000000000200000
+secro            0x0000000007780000     0x0000000000600000
+keystore         0x0000000007d80000     0x0000000000800000
+tee1             0x0000000008580000     0x0000000000500000
+tee2             0x0000000008a80000     0x0000000000500000
+frp              0x0000000008f80000     0x0000000000100000
+nvdata           0x0000000009080000     0x0000000002000000
+metadata         0x000000000b080000     0x0000000002780000
+system           0x000000000d800000     0x00000000a2800000
+cache            0x00000000b0000000     0x0000000019000000
+userdata         0x00000000c9000000     0x00000002d9d80000
+flashinfo        0x00000003a2d80000     0x0000000001000000
+sgpt             0x00000003a3d80000     0x0000000000080000
+{% endhighlight bash %}
 
 Apart from the chipset and ABI information, another important information required for compiling a suitable recovery for the device are its partition info. The device uses an EMMC based internal storage which is of our primary interest. The broad partitioning scheme used by the device can be identified easily:
 
@@ -197,9 +233,44 @@ As far as I could figure out, the only way to access raw storage without rooting
 
 If everything goes well, the tool should read raw data from phone storage and create the image file. I was able to extract boot.img, system.img, recovery.img from the phone using the SP Flash Tool.
 
+#### Playing with Boot Image
+
+The SP Flash tool can be used to extract the boot image as shown earlier. The information required for the extraction is readily available from */proc/partinfo* file in a running device. Once the *boot.img* is obtained, it can be unpacked using the *unpackbootimg* tool. This tool comes as a part of Cyanogen source tree or can be downloaded/built independently as well:
+
+{% highlight bash %}
+$ unpackbootimg -i /tmp/boot.img 
+Android magic found at: 0
+BOARD_KERNEL_CMDLINE bootopt=64S3,32N2,64N2
+BOARD_KERNEL_BASE 40078000
+BOARD_RAMDISK_OFFSET 03f88000
+BOARD_SECOND_OFFSET 00e88000
+BOARD_TAGS_OFFSET 0df88000
+BOARD_PAGE_SIZE 2048
+BOARD_SECOND_SIZE 0
+BOARD_DT_SIZE 0
+{% endhighlight %}
+
+These information are required for building [Cyanogen Recovery](http://xda-university.com/as-a-developer/porting-clockworkmod-recovery-to-a-new-device). The kernel and ramdisk are extracted as *boot.img-zImage* and *boot.img-ramdisk.gz* respectively. The ramdisk contains a whole bunch of useful configuration files that can be re-used while building Cyanogen for the device. The ramdisk can be extracted using the below commands:
+
+{% highlight bash %}
+$ bzip -d boot.img-ramdisk.gz
+$ mkdir ramdisk-extract; cd ramdisk-extract
+$ cpio -idv < ../boot.img-ramdisk
+
+$ ls
+charger                  factory_init.rc  init.modem.rc            init.ssd.rc        init.zygote64_32.rc   sbin              system
+data                     file_contexts    init.mt6735.rc           init.trace.rc      meta_init.modem.rc    seapp_contexts    ueventd.rc
+default.prop             fstab.mt6735     init.mt6735.usb.rc       init.trustonic.rc  meta_init.project.rc  selinux_version
+dev                      init             init.project.rc          init.usb.rc        meta_init.rc          sepolicy
+enableswap.sh            init.aee.rc      init.rc                  init.xlog.rc       proc                  service_contexts
+factory_init.project.rc  init.environ.rc  init.recovery.mt6735.rc  init.zygote32.rc   property_contexts     sys
+{% endhighlight %}
+
 ### References:
 
 * http://forum.xda-developers.com/showthread.php?t=1982587
 * http://mattboyer.github.io/PYaffs/
+* https://github.com/visi0nary/android_device_elephone_p8000/
+
 
 
