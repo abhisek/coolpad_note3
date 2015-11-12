@@ -118,7 +118,7 @@ Connection: Keep-Alive
 
 #### App Analytics over HTTP
 
-The device periodically sends list of installed app names to a remote *shady* URL periodically over HTTP. The response to this request appears to be a minimal gif file.
+The device periodically sends list of installed app names to a remote *shady* URL over HTTP. The response to this request appears to be a minimal gif file.
 
 {% highlight http %}
 POST /c.gif HTTP/1.1
