@@ -16,8 +16,7 @@ ng the fastboot protocol while the device is in fastboot mode.
 
 Almost all Android based device comes with a locked bootloader. The locked bootloader ensures that the OS cannot be flashed using software means, at least
  without first unlocking the bootloader. Over the years, the Android boot process has become more complex with cryptographic means to establish trust for 
-bootloader and maintain a chain of trust for subsequent components involved in the boot process. Android developer documentation explains [verified boot p
-rocess](https://source.android.com/devices/tech/security/verifiedboot/verified-boot.html) in greater detail.
+bootloader and maintain a chain of trust for subsequent components involved in the boot process. Android developer documentation explains [verified boot process](https://source.android.com/devices/tech/security/verifiedboot/verified-boot.html) in greater detail.
 
 However, Android has always been developer friendly i.e. most Android based smart phones from different manufacturer allow an user to flash the different 
 part of the system with their own modified software, ofcourse at their own risk. Technically this means there are well defined specification and tools for
