@@ -233,6 +233,25 @@ As far as I could figure out, the only way to access raw storage without rooting
 
 If everything goes well, the tool should read raw data from phone storage and create the image file. I was able to extract boot.img, system.img, recovery.img from the phone using the SP Flash Tool.
 
+> For VMware users like myself, it might be required to [auto connect the phone](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=1648) identified by USB Vendor Id to the VM while it is in download mode.
+
+The Mediatek preloader connects to USB as a different device than ADB interface. The device id can be obtained from dmesg if you are on Linux:
+
+{% highlight bash %}
+$ dmesg
+[...]
+[134881.637448] usb 2-1.3: new high-speed USB device number 70 using ehci-pci
+[134881.731159] usb 2-1.3: New USB device found, idVendor=0e8d, idProduct=2000
+[134881.731165] usb 2-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[134881.731168] usb 2-1.3: Product: MT65xx Preloader
+[134881.731171] usb 2-1.3: Manufacturer: MediaTek
+[134884.256877] usb 2-1.3: USB disconnect, device number 70
+
+[...]
+{% endhighlight %}
+
+As you can notice, the device will disconnect immediately if it does not receive a specific command from the SP Flash Tool. Actually the device waits for 150ms for START command to enter the download mode before continuing with power-off charging boot. [More details on this available here](https://sturmflut.github.io/mediatek/2015/07/04/mediatek-details-partitions-and-preloader/)
+
 #### Playing with Boot Image
 
 The SP Flash tool can be used to extract the boot image as shown earlier. The information required for the extraction is readily available from */proc/partinfo* file in a running device. Once the *boot.img* is obtained, it can be unpacked using the *unpackbootimg* tool. This tool comes as a part of Cyanogen source tree or can be downloaded/built independently as well:

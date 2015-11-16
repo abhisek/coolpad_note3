@@ -45,7 +45,18 @@ However, things may not go as expected, especially in my case with the Coolpad N
 {% highlight bash %}
 $ adb reboot bootloader
 $ fastboot -i 0x1ebf devices
+ZTBAWCGU7949EQWG     fastboot
 $ fastboot -i 0x1ebf oem unlock
+...
+FAILED (remote: unknown command)
+finished. total time: 0.002s
+$ fastboot -i 0x1ebf flash recovery /tmp/cm_recovery.img 
+target reported max download size of 134217728 bytes
+sending 'recovery' (16384 KB)...
+OKAY [  1.683s]
+writing 'recovery'...
+FAILED (remote: unknown command)
+finished. total time: 1.686s
 {% endhighlight %}
 
 For Mediatek based devices, the fasboot mode is handled by the [Little Kernel](https://sturmflut.github.io/mediatek/2015/07/05/mediatek-details-little-kernel/). However, it turns out that the [LK does not support OEM unlock](https://sturmflut.github.io/ubuntu/touch/2015/07/04/hacking-ubuntu-touch-part-8-fastboot/).
