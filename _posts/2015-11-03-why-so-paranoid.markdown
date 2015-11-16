@@ -7,7 +7,7 @@ categories: analysis
 
 ### The Philosophy
 
-It is a well known fact in the information security as well as the developer community that modern software especially something as personal as a smart phone collects a whole bunch of information. The guys at [Wikileaks](http://www.wikileaks.org) played their extra part in *highlighting* the kindness of state sponsored organizations in safe guarding our personal data. While it is not entirely possible for a home user like myself to prevent vendors and OEM to access my personal data if I *must* use their products and technologies, I would at least expect OEM and vendors to follow basic security guidelines and provide me at least a **false sense of security**, if not a choice for security.
+It is a well known fact in information security as well as the developer community that modern software especially something as personal as a smart phone collects a whole bunch of information. The guys at [Wikileaks](http://www.wikileaks.org) played their extra part in *highlighting* the kindness of state sponsored organizations in safe guarding our personal data. While it is not entirely possible for a home user like myself to prevent vendors and OEM to access my personal data if I *must* use their products and technologies, I would at least expect OEM and vendors to follow basic security guidelines and provide me at least a **false sense of security**, if not a choice for security.
 
 
 ### Research
