@@ -170,6 +170,6 @@ The above HTTP transaction occurs over a plain-text insecure and untrusted chann
 http://ota.coolyun.com/ota/Android/CP8676_I02/P1/5.1.015.P1.150929.8676_I02_5.1.019.P1.151101.8676_I02/update_1446480447774.zip
 {% endhighlight %}
 
-Luckily the archive appears to be signed. However I am yet to verify if the signature is verified correctly before applying the update.
+Luckily the archive appears to be signed. However I am yet to verify if the signature is checked correctly before applying the update.
 
 
